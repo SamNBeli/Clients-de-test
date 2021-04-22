@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Compilateur</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+<header>
+    <div class="container">
+
+        <img class="logo" src="Mon Logo - Drawing 1.png" alt="logo">
+
+        <nav>
+            <ul>
+                <li>
+                    <p id="nums">Numero de session</p>
+                </li>
+            </ul>
+            
+        </nav>
+
+    </div>
+</header>
+<form>
+    <div class="comparea">
+        <div class="leftc">
+            <fieldset>
+            <legend>Code</legend>
+            <textarea name="code" id="codea" cols="70" rows="30"></textarea>
+            </fieldset>
+            <div class="button">
+                <ul>
+                <li><button type="button" onclick="envexec()">Executer</button></li>
+                <li><button type="button" onclick="envred()">Redemarrer</button></li>
+                </ul>
+                </div>
+        </div>
+        <div class="rightc">
+            <fieldset>
+            <legend>Resultat</legend>
+            <textarea name="result" id="resulta" cols="70" rows="19"></textarea>
+            </fieldset>
+            <fieldset>
+            <legend>Erreur</legend>
+            <textarea name="error" id="errora" cols="70" rows="10"></textarea>
+            </fieldset>
+        </div>
+    </div>
+</form>
+        <script>
+
+String.random = function (length) {
+	let radom13chars = function () {
+		return Math.random().toString(16).substring(2, 15)
+	}
+	let loops = Math.ceil(length / 13)
+	return new Array(loops).fill(radom13chars).reduce((string, func) => {
+		return string + func()
+	}, '').substring(0, length)
+}
+console.log(String.random(10))
+
+
+
+            var inputVal = document.getElementById('codea');
+            var idcomp = String.random(10) ;
+            var xhttp = new XMLHttpRequest();
+            function envde(){
+            xhttp.open("POST", "http://localhost:8080/dem", true);
+                xhttp.send(idcomp);
+                document.getElementById("nums").innerHTML ="Numero de session: "+ idcomp;
+            }
+            envde();
+            function envexec() {
+                
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var response =JSON.parse (this.responseText);
+                        document.getElementById("resulta").innerHTML ="Status:\n"+response.status+"\n\nValue:\n"+ response.result;
+                        document.getElementById("errora").innerHTML = response.exceptions;
+                    }
+                };
+                xhttp.open("POST", "http://localhost:8080/comp?id="+idcomp, true);
+                xhttp.send(inputVal.value);
+            } 
+            
+            function envred(){
+                xhttp.open("POST", "http://localhost:8080/reset", true);
+                xhttp.send(idcomp);
+                document.getElementById("nums").innerHTML ="Numero de session: "+ idcomp;
+            }
+        </script>
+    </body>
+</html>

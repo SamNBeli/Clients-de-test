@@ -1,0 +1,377 @@
+<!DOCTYPE html
+      PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+<title>Instructions répétitives</title>
+<base href="http://w4.uqo.ca/iglewski/ens/inf1563/src/"/>
+<link rel="stylesheet" href="../../common/styles.css" charset="ISO-8859-1" type="text/css" />
+<script type="text/javascript" src="../../common/lib.js"></script>
+
+<style>
+    /* Popup container - can be anything you want */
+    .popup {
+      position: relative;
+      /*display: inline-block;*/
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    
+    /* The actual popup */
+    .popup .popuptext {
+      visibility: hidden;
+      width: auto;
+      background-color: #555;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -80px;
+    }
+    
+    /* Popup arrow */
+    .popup .popuptext::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #555 transparent transparent transparent;
+    }
+    
+    /* Toggle this class - hide and show the popup */
+    .popup .show {
+      visibility: visible;
+      -webkit-animation: fadeIn 1s;
+      animation: fadeIn 1s;
+    }
+    
+    /* Add animation (fade in the popup) */
+    @-webkit-keyframes fadeIn {
+      from {opacity: 0;} 
+      to {opacity: 1;}
+    }
+    
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity:1 ;}
+    }
+    </style>
+  
+</head>
+
+<body>
+<div id="nav" style="float:left;padding-bottom:0.6em;margin-bottom:0px">
+  <a href="controle/controle_alt.php"><img src="../../common/gif/left.gif" alt="PREVIOUS" /></a>
+  <a href="controle/controle_index.php"><img src="../../common/gif/top.gif" alt="UP" /></a>
+  <a href="controle/controle_branche.php"><img src="../../common/gif/right.gif" alt="NEXT" /></a>
+</div>
+<div id="titre" style="float:left;padding-left:2.8em;padding-top:0.8em">INF1563 Programmation I
+</div>
+<p style="clear:both;margin:0px"/>
+<hr/>
+
+<h1>Instructions répétitives</h1>
+<hr/>
+
+<br/><h3>Introduction</h3>
+<p class="def">Une itération est un processus dans lequel une opération peut
+  être effectuée plus d'une
+fois.</p>
+
+<p>Exemples :</p>
+<ul>
+  <li>l'envoi de plusieurs lettres; l'opération à répéter : "apposer un timbre" </li>
+  <li>le calcul de la moyenne de plusieurs valeurs; nous devons d'abord calculer leur somme; l'opération à répéter : "additioner"</li>
+</ul>
+
+<br/><h3>Combien de fois répéter une action ?</h3>
+
+<p>Pour arrêter l'itération :</p>
+<ul>
+  <li>nous pouvons spécifier le nombre de répétitions<br/>
+    exemple : "apposer le timbre" <b>5 fois</b>
+  </li>
+  <li>nous pouvons spécifier une condition d'arrêt<br/>
+    exemple : tant que "<b>il fait froid</b>" "ajouter du bois de chauffage"<br/>
+    la condition d'arrêt : il ne fait plus de froid
+  </li>
+</ul>
+
+<br/><h3>La boucle "while"</h3>
+<p><img src="http://w4.uqo.ca/iglewski/ens/inf1563/src/controle/img/while.jpeg" width="60%" alt="boucle while"/></p>
+<ul>
+  <li>si la condition <i>test</i> est vraie, on entre dans
+    la boucle (une première fois ou à nouveau)</li>
+  <li>si la condition <i>test</i> est fausse, l'exécution de la boucle est terminée</li>
+  <li>dans la boucle, après avoir exécuté les instructions, on retourne à
+    l'évaluation de la condition</li>
+</ul>
+<p>Exemple :</p>
+<pre>"mesurer la température"
+tant que "la température < 20 degrés"
+  "ajouter du bois de chauffage"
+  "attendre 3 minutes"
+  "mesurer la température"</pre>
+
+<p>En Java :</p>
+<pre>float temp = Chauffage.getTemperature();
+while (temp < 20) {
+  Chauffage.ajouterBois();
+  Thread.sleep(180000);
+  temp = getTemperature()
+}</pre>
+
+<h4>Attention</h4>
+<ul>
+  <li>si l'évaluation de la condition <i>test</i> donne la valeur <code>true</code>,
+on bouclera infiniment</li>
+  <li>une erreur souvent rencontrée</li>
+  <li>pour éviter cette erreur, la valeur de la condition doit dépendre des
+    actions exécutées dans la boucle</li>
+</ul>
+
+<h5>Exemple : calcul de la somme 1 + 2 + ... + 100</h5>
+<p>Algorithme (pseudocode) :</p>
+<pre>
+somme = 0;
+"choisir la première valeur"
+while "il reste des valeurs à additionner"
+  somme += valeur
+  "choisir la valeur suivante"</pre>
+
+<p>Code Java</p>
+<pre>
+int somme = 0;
+int valeur = 1;
+final int derniere = 100;
+
+while (valeur <= derniere) {
+  somme += valeur;
+  valeur++ ;
+}</pre>
+
+<h5>Exemple : calcul de la somme des entiers lus au clavier</h5>
+<p>Algorithme (pseudocode) :</p>
+<pre>
+somme = 0;
+"lire la première valeur"
+while "il reste des valeurs à additionner"
+  somme += valeur
+  "lire la valeur suivante"
+"afficher la somme"
+</pre>
+
+<p>Code Java</p>
+<pre>
+// condition d'arrêt : la dernière valeur est suivie de -1
+int valeur, somme = 0;
+BufferedReader b = new BufferedReader(new InputStreamReader(System.in));
+
+try {
+  String s = b.readLine();       // lecture de la
+  valeur = Integer.parseInt(s);  // prochaine valeur
+  while (valeur != -1) {
+    somme += valeur;
+    s = b.readLine();              // lecture de la
+    valeur = Integer.parseInt(s);  // prochaine valeur
+  }
+}
+catch (IOException e){
+}
+System.out.println("somme = " + somme);</pre>
+
+
+<br/><h3>La boucle "do while"</h3>
+<p>On répète au moins une fois un groupe d'instructions; on arrête la boucle lorsque la condition est fausse,</p>
+<p><img src="http://w4.uqo.ca/iglewski/ens/inf1563/src/controle/img/dowhile.jpeg" width="60%" alt="boucle do while"/></p>
+
+<p>Exemple :</p>
+<pre>do {
+  "faire un traitement";
+  "évaluer les résultats";
+} while "les résultats ne sont pas satisfaisants";
+</pre>
+
+<br/><h3>La boucle "for"</h3>
+<ul>
+  <li>un schéma fréquent de la boucle while
+    <p><img src="http://w4.uqo.ca/iglewski/ens/inf1563/src/controle/img/for.jpeg" width="62%" alt="boucle for"/></p></li>
+  <li>la boucle est exécutée N fois</li>
+  <li>la variable <i>i</i> prend les valeurs 0, 1, ..., N-1</li>
+</ul>
+<h4>Syntaxe</h4>
+<p>for ( &lt;instruction d'initialisation&gt;; &lt;condition de continuation&gt;; &lt;instruction de mise à jour&gt; ) &lt;instruction à répéter&gt;;</p>
+
+<p><b>Problème</b> : afficher les valeurs paires entre 0 et 10 (inclusivement)</p>
+<p>Solution</p>
+<p style="color:red">Appuyez sur le code pour afficher le résultat</p>
+<pre class="popup" onclick="myFunction()"><div id="cole"> for (int compteur = 0; compteur <= 10; compteur++){
+      if (compteur % 2 == 0){
+        System.out.println(compteur);}} </div><span class="popuptext" id="myPopup">Popup text...</span></pre>    
+       
+
+<p>Une autre solution</p>
+<pre>for (int compteur = 0; compteur <= 10; compteur+=2)
+  System.out.println(compteur);</pre>
+
+<p><b>Problème</b> : afficher les valeurs paires entre 1 et 100 (inclusivement),
+  10 valeurs par ligne</p>
+<p>Solution incluant du pseudo-code</p>
+<pre>for (int compteur = 1; compteur <= 100; compteur++){
+  if (compteur % 2 == 0) {
+    System.out.print(compteur + " ");
+    if ("10 valeurs affichées sur cette ligne")
+      System.out.println();
+  }
+}</pre>
+<p>Solution</p>
+<pre>for (int compteur = 1; compteur <= 100; compteur++){
+  if (compteur % 2 == 0) {
+    System.out.print(compteur + " ");
+    if (compteur % 20 == 0)
+      System.out.println();
+  }
+}</pre>
+
+<h4>Bonne pratique de la programmation</h4>
+
+<p>Les deux programmes suivants bouclent infiniment :</p>
+<ul>
+  <li><pre style="margin-top:0">int n = 0;
+while (n < 10);
+  System.out.println(n);
+  n = n + 1;</pre>
+  </li>
+  <li><pre style="margin-top:0;margin-bottom:0">int n = 0;
+while (n < 10)
+  System.out.println(n);
+  n = n + 1;</pre>
+  </li>
+</ul>
+<p>La version correcte :</p>
+<pre>int n = 0;
+while (n < 10) {
+  System.out.println(n);
+  n = n + 1;
+}</pre>
+<p>Conseil :</p>
+<ul>
+  <li>utilisez toujours des blocs !</li>
+  <li>l'ajout de nouvelles lignes sera aussi plus facile</li>
+  <li>faites attention à l'indentation</li>
+</ul>
+<h4>Quiz</h4>
+<p>Le programme doit</p>
+<ul>
+  <li>lire un entier au clavier</li>
+  <li>vérifier si la chaîne de caractères fournie par l'usager
+    représente un entier</li>
+  <li>recommencer la lecture tant que ce n'est pas un entier valide</li>
+</ul>
+<p>Quel type de boucle utiliserez-vous ?</p>
+<form action="">
+  <input type="radio" name="r" value="false" onclick="alert('Non! On doit lire au moins une fois');"/>while
+  <input type="radio" name="r" value="true" onclick="alert('Oui!');"/>do while
+  <input type="radio" name="r" value="false" onclick="alert('Non!');"/>for
+</form>
+<hr/><div id="nav2" style="float:left;padding-bottom:0.6em;margin-top:4px;margin-bottom:0px">
+  <a href="controle/controle_alt.php"><img src="../../common/gif/left.gif" alt="PREVIOUS" /></a>
+  <a href="controle/controle_index.php"><img src="../../common/gif/top.gif" alt="UP" /></a>
+  <a href="controle/controle_branche.php"><img src="../../common/gif/right.gif" alt="NEXT" /></a>
+</div>
+<p style='clear:both'/>
+<p style='font-size:8pt;font-style:italic'><span style='float:left'>(Dernière modification : le 1 Janvier 1970, 0:00)</span><span id='validez' style='padding-left:9em;float:left'>
+<a href='http://validator.w3.org/check?uri=referer' title='Lien externe : W3C Markup Validator'>Validez cette page</a></span>
+<span style='float:right'>
+<a href='../../common/copyright.php'>© Droit d'auteur / Copyright</a></span>
+</p>
+
+<p style='display:none'>Menu du site :</p>
+<ul style='display:none'>
+  <li><a accesskey='1' href='http://w4.uqo.ca/iglewski/ens/inf1563/src/contents.xml'>
+        <span>Table des matières</span>
+      </a>
+  </li>
+</ul>
+<script>
+
+var replaceHtmlEntites = (function() {
+    var translate_re = /&(nbsp|amp|quot|lt|gt);/g,
+        translate = {
+            'nbsp': String.fromCharCode(160), 
+            'amp' : '&', 
+            'quot': '"',
+            'lt'  : '<', 
+            'gt'  : '>'
+        },
+        translator = function($0, $1) { 
+            return translate[$1]; 
+        };
+
+    return function(s) {
+        return s.replace(translate_re, translator);
+    };
+})();
+
+    String.random = function (length) {
+    let radom13chars = function () {
+      return Math.random().toString(16).substring(2, 15)
+    }
+    let loops = Math.ceil(length / 13)
+    return new Array(loops).fill(radom13chars).reduce((string, func) => {
+      return string + func()
+    }, '').substring(0, length)
+  }
+  console.log(String.random(10))
+  
+  var inputVal = document.getElementById('cole').innerHTML;
+  var idcomp = String.random(10) ;
+              var xhttp = new XMLHttpRequest();
+  
+              function envred(){
+                  xhttp.open("POST", "http://localhost:8080/reset", true);
+                  xhttp.send(idcomp);
+                 // document.getElementById("nums").innerHTML ="Numero de session: "+ idcomp;
+              }
+              function envde(){
+              xhttp.open("POST", "http://localhost:8080/dem", true);
+                  xhttp.send(idcomp);
+                 // document.getElementById("nums").innerHTML ="Numero de session: "+ idcomp;
+              }
+              envde();
+    // When the user clicks on div, open the popup
+    function myFunction() {
+  
+      xhttp.onreadystatechange = function() {
+        
+                     if (this.readyState == 4 && this.status == 200) {
+                          var response =JSON.parse (this.responseText);
+                          if(response.result == "No results"){
+                            document.getElementById("myPopup").innerHTML ="Erreur:\n"+ response.exceptions;
+                          }else{
+                          document.getElementById("myPopup").innerHTML ="Sortie standard:\n"+ response.result;
+                        }
+                      }
+                  };
+                  xhttp.open("POST", "http://localhost:8080/comp?id="+idcomp, true);
+                  xhttp.send(replaceHtmlEntites(inputVal));
+                  console.log(inputVal);                
+      var popup = document.getElementById("myPopup");
+      popup.classList.toggle("show");
+     // envred();
+    }
+    </script>
+  
+</body>
+</html>
